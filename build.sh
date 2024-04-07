@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Exit on error
+set -o errexit
+
+# Modify this line as needed for your package manager (pip, poetry, etc.)
+pip install -r requirements.txt
+
+# Convert static asset files
+python3 manage.py collectstatic --no-input
+
+# Apply any outstanding database migrations
+python3 manage.py migrate
+
+# Test CREATESUPER_USER
+if [[ $CREATE_SUPERUSER ]];
+then
+  python3 manage.py createsuperuser --no-input
+fi
